@@ -1,0 +1,112 @@
+﻿@model PagedList.IPagedList<OnlineShopApi.ViewModels.Product.GetProductListViewModel>
+@using System.Collections
+@using PagedList.Mvc;
+@{
+	ViewBag.Title = "ProductList";
+}
+
+@section scripts{
+	<script>
+		$(function () {
+			$('#btn').on('click', Add = function (id) {
+				$.ajax({
+					type: 'POST',
+					url: '../../product/add_product_to_basket',
+					data: {
+						"id": id
+					}
+				});
+			});
+			$('#btn').on('click', Delete = function Delete(id) {
+				$.ajax({
+					type: 'POST',
+					url: '../../product/delete_one_product_instance_from_basket',
+					data: {
+						"id": id
+					},
+					success: changeCount("totalCount")
+				});
+			});
+			var changeCount = function (count) {
+				alert(count);
+			}
+		});
+	</script>
+}
+
+<h2>ProductList</h2>
+
+<p>
+	@Html.ActionLink("Create New", "Create")
+</p>
+
+@using (Html.BeginForm(FormMethod.Get))
+{
+	@Html.AntiForgeryToken()
+	<div class="form-horizontal">
+		@Html.Label("Product", htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.TextBox("product", "", htmlAttributes: new { @class = "form-control" })
+		</div>
+		<div class="form-group">
+			@Html.Label("", htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownList("Category", new SelectList((IEnumerable)ViewData["categories"], "Id", "Name"), new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessage("category", "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" formmethod="get" value="Найти" class="btn btn-default" />
+			</div>
+		</div>
+	</div>
+}
+<table class="table">
+	<tr>
+		<th>
+			@*@Html.DisplayNameFor(model => model.Name)*@
+		</th>
+		<th>
+			@*@Html.DisplayNameFor(model => model.Price)*@
+		</th>
+		<th>
+			@*@Html.DisplayNameFor(model => model.Category)*@
+		</th>
+		<th>
+		</th>
+		<th>
+		</th>
+	</tr>
+
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Name)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Price)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Category)
+			</td>
+			<td>
+				@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+				@Html.ActionLink("Details", "Details", new { id = item.Id }) |
+				@Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+				<input type="button" value="+" onclick="Add(@item.Id);" />
+				<input type="button" value="-" onclick="Delete(@item.Id);" />
+
+				@*@Html.ActionLink("+", "add_product_to_basket", new { id = item.Id }) |*@
+				@*@Html.ActionLink("-", "delete_product_from_basket", new { id = item.Id })*@
+			</td>
+		</tr>
+	}
+
+</table>
+	Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+
+	@Html.PagedListPager(Model, id => Url.Action("List", "Product", new { id }))
+
