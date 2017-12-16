@@ -1,8 +1,6 @@
 ﻿using OnlineShop.DAL.Entities;
 using OnlineShopApi.ViewModels.Product;
-using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Data.SqlClient;
+using System;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -35,29 +33,30 @@ namespace OnlineShopApi.Controllers
 			}));
 		}
 
-		[HttpPost]
-		public ActionResult Delete()
+		[HttpGet]
+		public ActionResult Delete(int id)
 		{
 			User user = GetCurrentUser();
 			if (user == null) return RedirectToAction("Login", "Account");
-
+			Product product = UnitOfWork.ProductRepo.FindById(id);
+			user.Products.Remove(product);
 			return RedirectToAction("Basket");
 		}
 
-		[HttpPost]
+		[HttpGet]
 		public ActionResult Buy()
 		{
 			User user = GetCurrentUser();
 			if (user == null) return RedirectToAction("Login", "Account");
 			try
 			{
-				Order order = new Order();
-				UnitOfWork.OrderRepo.Create(order);
-				foreach (Product product in user.Products)
+				Order order = new Order()
 				{
-					order.Products.Add(product);
-				}
-				UnitOfWork.SaveChanges();
+					CreateDt = DateTimeOffset.Now,
+					User = user,
+					Products = user.Products
+				};
+				UnitOfWork.OrderRepo.Create(order);
 				return RedirectToAction("List", "Product");
 			}
 			catch

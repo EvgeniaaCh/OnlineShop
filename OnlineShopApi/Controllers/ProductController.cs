@@ -40,13 +40,6 @@ namespace OnlineShopApi.Controllers
 			return View(result.ToPagedList(id, 10));
 		}
 
-		public ActionResult Detail(int id)
-		{
-			IProductRepo repo = UnitOfWork.ProductRepo;
-			Product product = repo.FindById(id);
-			return View(product);
-		}
-
 		[HttpGet]
 		public ActionResult Create()
 		{
@@ -109,12 +102,12 @@ namespace OnlineShopApi.Controllers
 			catch (Exception e) when (e is DbUpdateException || e is EntityCommandExecutionException)
 			{
 				ModelState.AddModelError("", "Для запрошенного действия не хватает прав");
-				return RedirectToAction("List", "Product");
+				return RedirectToAction("List");
 			}
 			catch
 			{
 				ModelState.AddModelError("", "Ошибка в работе системы");
-				return RedirectToAction("List", "Product");
+				return RedirectToAction("List");
 			}
 		}
 
@@ -146,7 +139,7 @@ namespace OnlineShopApi.Controllers
 				product.Description = viewModel.Description;
 				product.Price = viewModel.Price;
 				UnitOfWork.SaveChanges();
-				return RedirectToAction("List", "Product");
+				return RedirectToAction("List");
 			}
 			catch (DbEntityValidationException e)
 			{

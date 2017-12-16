@@ -97,9 +97,6 @@
 				@Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
 				<input type="button" value="+" onclick="Add(@item.Id);" />
 				<input type="button" value="-" onclick="Delete(@item.Id);" />
-
-				@*@Html.ActionLink("+", "add_product_to_basket", new { id = item.Id }) |*@
-				@*@Html.ActionLink("-", "delete_product_from_basket", new { id = item.Id })*@
 			</td>
 		</tr>
 	}
