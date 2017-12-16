@@ -4,13 +4,10 @@ using OnlineShopApi.ViewModels.Product;
 using PagedList;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Entity.Core;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
-using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Web.Mvc;
 
 namespace OnlineShopApi.Controllers
@@ -99,7 +96,7 @@ namespace OnlineShopApi.Controllers
 			}
 		}
 
-		[HttpPost]
+		[HttpGet]
 		public ActionResult Delete(int id)
 		{
 			try
@@ -172,6 +169,24 @@ namespace OnlineShopApi.Controllers
 				ViewData["categories"] = UnitOfWork.CategoryRepo.Get().ToList();
 				return View(viewModel);
 			}
+		}
+
+		[HttpGet]
+		public ActionResult Details(int id)
+		{
+			User user = GetCurrentUser();
+			if (user == null) return RedirectToAction("Login", "Account");
+			Product product = UnitOfWork.ProductRepo.FindById(id);
+			GetProductViewModel viewModel = new GetProductViewModel
+			{
+				Id = product.Id,
+				Name = product.Name,
+				Description = product.Description,
+				Price = product.Price,
+				Category = product.Category.Name,
+				OrdersCount = product.Orders.Count
+			};
+			return View(viewModel);
 		}
 	}
 }

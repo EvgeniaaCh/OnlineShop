@@ -3,12 +3,8 @@
 @{
     ViewBag.Title = "Basket";
 }
-
 <h2>Basket</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -33,10 +29,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PricePerUnit)
-        </td>
-        <td>
-            @Html.ActionLink("+", "add_product_to_basket", new { id=item.Id }) |
-            @Html.ActionLink("-", "delete_product_from_basket", new { id=item.Id })
         </td>
     </tr>
 }

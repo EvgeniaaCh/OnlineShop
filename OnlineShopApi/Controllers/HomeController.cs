@@ -1,5 +1,8 @@
 ﻿using OnlineShop.DAL.Entities;
 using OnlineShopApi.ViewModels.Product;
+using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -27,9 +30,18 @@ namespace OnlineShopApi.Controllers
 			{
 				Id = p.Id,
 				Name = p.Name,
-				Count = UnitOfWork.Context.Database.ExecuteSqlCommand($"do $$ begin perform dbo.get_product_count({user.Id}, {p.Id}); end $$"),
+				Count = UnitOfWork.Context.Database.SqlQuery<int>($"select dbo.get_product_count_from_basket({user.Id}, {p.Id});").FirstOrDefault(),
 				PricePerUnit = p.Price
 			}));
+		}
+
+		[HttpPost]
+		public ActionResult Delete()
+		{
+			User user = GetCurrentUser();
+			if (user == null) return RedirectToAction("Login", "Account");
+
+			return RedirectToAction("Basket");
 		}
 
 		[HttpPost]

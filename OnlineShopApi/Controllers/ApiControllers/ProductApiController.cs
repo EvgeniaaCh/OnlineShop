@@ -24,32 +24,11 @@ namespace OnlineShopApi.Controllers.ApiControllers
 			try
 			{
 				UnitOfWork.Context.Database.ExecuteSqlCommand($"do $$ begin perform add_product_to_basket({user.Id}, {product.Id}); end $$");
-				return Ok();
-			}
-			catch
-			{
-				return BadRequest();
-			}
-		}
-
-		[HttpPost]
-		[Route("delete_product_from_basket")]
-		public IHttpActionResult DeleteProductFromBasket([FromBody]DeleteProductFromBasketRequest request)
-		{
-			User user = GetCurrentUser();
-			if (user == null) return Unauthorized();
-			Product basketProduct = user.Products.FirstOrDefault(p => p.Id == request.Id);
-			if (basketProduct == null) return BadRequest();
-			try
-			{
-				user.Products.Remove(basketProduct);
-				UnitOfWork.SaveChanges();
-				DeleteProductFromBasketResponse response = new DeleteProductFromBasketResponse
-				{
-					Count = 0,
-					TotalCount = user.Products.Count
-				};
-				return Ok(response);
+				return Ok(
+					UnitOfWork
+					.Context.Database
+					.SqlQuery<int>($"select dbo.get_product_count_from_basket({user.Id}, {product.Id});")
+					.FirstOrDefault());
 			}
 			catch
 			{
@@ -67,32 +46,12 @@ namespace OnlineShopApi.Controllers.ApiControllers
 			if (product == null) return BadRequest();
 			try
 			{
-				user.Products.Remove(product);
-				UnitOfWork.SaveChanges();
+				UnitOfWork.Context.Database.ExecuteSqlCommand($"do $$ begin perform delete_one_product_instance_from_basket({user.Id}, {product.Id}); end $$");
 				DeleteOneProductInstanceFromBasketResponse response = new DeleteOneProductInstanceFromBasketResponse
 				{
-					Count = user.Products.Count(p => p.Id == request.Id),
-					TotalCount = user.Products.Count
+					Count = UnitOfWork.Context.Database.SqlQuery<int>($"select dbo.get_product_count_from_basket({user.Id}, {product.Id});").FirstOrDefault()
 				};
 				return Ok(response);
-			}
-			catch
-			{
-				return BadRequest();
-			}
-		}
-
-		[HttpPost]
-		[Route("clear_basket")]
-		public IHttpActionResult ClearBasket()
-		{
-			User user = GetCurrentUser();
-			if (user == null) return Unauthorized();
-			try
-			{
-				user.Products.Clear();
-				UnitOfWork.SaveChanges();
-				return Ok();
 			}
 			catch
 			{

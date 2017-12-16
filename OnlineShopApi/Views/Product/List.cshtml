@@ -17,18 +17,17 @@
 					}
 				});
 			});
-			$('#btn').on('click', Delete = function Delete(id) {
+			$('#btn').on('click', Delete = function (id) {
 				$.ajax({
 					type: 'POST',
 					url: '../../product/delete_one_product_instance_from_basket',
 					data: {
 						"id": id
-					},
-					success: changeCount("totalCount")
+					}
 				});
 			});
-			var changeCount = function (count) {
-				alert(count);
+			var changeCount = function (id, count) {
+				document.getElementById()
 			}
 		});
 	</script>

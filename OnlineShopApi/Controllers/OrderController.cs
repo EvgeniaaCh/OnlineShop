@@ -25,12 +25,14 @@ namespace OnlineShopApi.Controllers
 
 		public ActionResult Detail(int id)
 		{
+			User user = GetCurrentUser();
 			List<Product> orderProducts = UnitOfWork.OrderRepo.FindById(id).Products.ToList();
 			IEnumerable<GetOrderDetailViewModel> details = orderProducts.Select(p => new GetOrderDetailViewModel
 			{
 				Id = p.Id,
 				Name = p.Name,
-				Price = p.Price
+				Price = p.Price,
+				Count = UnitOfWork.Context.Database.SqlQuery<int>($"select dbo.get_product_count_from_basket({user.Id}, {p.Id});").FirstOrDefault()
 			});
 			return View(details);
 		}

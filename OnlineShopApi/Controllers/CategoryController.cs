@@ -1,7 +1,10 @@
 ﻿using OnlineShop.DAL.Entities;
 using OnlineShop.DAL.Repositories;
 using OnlineShopApi.ViewModels.Categories;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web.Mvc;
@@ -86,6 +89,29 @@ namespace OnlineShopApi.Controllers
 					ModelState.AddModelError("", message);
 				}
 				return View(viewModel);
+			}
+		}
+
+		[HttpGet]
+		public ActionResult Delete(int id)
+		{
+			User user = GetCurrentUser();
+			if (user == null) return RedirectToAction("Login", "Account");
+			Category category = UnitOfWork.CategoryRepo.FindById(id);
+			try
+			{
+				UnitOfWork.CategoryRepo.Remove(category);
+				return RedirectToAction("List");
+			}
+			catch (Exception e) when (e is DbUpdateException || e is EntityCommandExecutionException)
+			{
+				ModelState.AddModelError("", "Для запрошенного действия не хватает прав");
+				return RedirectToAction("List", "Product");
+			}
+			catch
+			{
+				ModelState.AddModelError("", "Ошибка в работе системы");
+				return RedirectToAction("List", "Product");
 			}
 		}
 	}
