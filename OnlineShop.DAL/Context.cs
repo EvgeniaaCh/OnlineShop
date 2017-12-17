@@ -6,7 +6,7 @@ namespace OnlineShop.DAL
 {
 	public class Context : DbContext
 	{
-		public Context() : base("admin")
+		public Context() : base("postgres")
 		{
 			Database.SetInitializer(new MigrateDatabaseToLatestVersion<Context, Migrations.Configuration>());
 		}

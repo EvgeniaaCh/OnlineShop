@@ -54,6 +54,11 @@ namespace OnlineShopApi.Controllers
 				}
 				return View(viewModel);
 			}
+            catch (DbUpdateException excep)
+            {
+                ModelState.AddModelError("", "Нет прав для выполнения операции");
+                return View(viewModel);
+            }
 		}
 
 		[HttpGet]

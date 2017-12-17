@@ -10,9 +10,9 @@ namespace OnlineShop.DAL.Migrations
 		public override void Up()
 		{
 
-			string path = HttpContext.Current.Server.MapPath("Resources");
+            string path = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath;    
 
-			string sql = File.ReadAllText(path + @"\SQL.sql");
+			string sql = File.ReadAllText(path + @"\Resources\SQL.sql");
 			Sql(sql);	
 		}
 

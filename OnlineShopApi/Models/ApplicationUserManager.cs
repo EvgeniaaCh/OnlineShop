@@ -2,15 +2,10 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using OnlineShop.DAL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace OnlineShopApi.Models
 {
-	public class ApplicationUserManager : UserManager<IdentityUser>
+    public class ApplicationUserManager : UserManager<IdentityUser>
 	{
 		public ApplicationUserManager(IUserStore<IdentityUser> store) : base(store)
 		{

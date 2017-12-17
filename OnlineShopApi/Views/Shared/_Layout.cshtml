@@ -25,14 +25,22 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+
+                    <li>@Html.ActionLink("Продукты", "List", "Product", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Категории продуктов", "Create", "Category", new { area = "" }, null)</li>
+
                     @if (Request.IsAuthenticated)
     {
                 <li>@Html.ActionLink($"Корзина", "Basket", "Home", new { area = "" }, null)</li>
                 <li>@Html.ActionLink("Заказы", "List", "Order", new { area = "" }, null)</li>
-     //           <div> <li>@Html.ActionLink("Выйти", "Logout", "Account", new { area = "" }, null)>.col-md-11</li></div>
+                <li>@Html.ActionLink("Выйти", "Logout", "Account", new { area = "" }, null)</li>
 }
-                    <li>@Html.ActionLink("Продукты", "List", "Product", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("Категории продуктов", "Create", "Category", new { area = "" }, null)</li>
+                    @if (!Request.IsAuthenticated)
+    {
+                <li>@Html.ActionLink("Войти", "Login", "Account", new { area = "" }, null)</li>
+                <li>@Html.ActionLink("Зарегистрироваться", "Registration", "Account", new { area = "" }, null)</li>
+}
+
                     <li>@Html.Label("")</li>
                 </ul>
             </div>
