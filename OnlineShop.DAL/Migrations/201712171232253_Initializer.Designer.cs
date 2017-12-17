@@ -7,13 +7,13 @@ namespace OnlineShop.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class DeletedLoginAndPasswordFromRoles : IMigrationMetadata
+    public sealed partial class Initializer : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(DeletedLoginAndPasswordFromRoles));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initializer));
         
         string IMigrationMetadata.Id
         {
-            get { return "201711261921030_DeletedLoginAndPasswordFromRoles"; }
+            get { return "201712171232253_Initializer"; }
         }
         
         string IMigrationMetadata.Source

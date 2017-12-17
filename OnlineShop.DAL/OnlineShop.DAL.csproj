@@ -54,6 +54,7 @@
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.4.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,33 +73,9 @@
     <Compile Include="GenericRepo.cs" />
     <Compile Include="IGenericRepo.cs" />
     <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="Migrations\201711201821380_Init.cs" />
-    <Compile Include="Migrations\201711201821380_Init.Designer.cs">
-      <DependentUpon>201711201821380_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711201853345_AddedProductImage.cs" />
-    <Compile Include="Migrations\201711201853345_AddedProductImage.Designer.cs">
-      <DependentUpon>201711201853345_AddedProductImage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711241649256_ChangedDateType.cs" />
-    <Compile Include="Migrations\201711241649256_ChangedDateType.Designer.cs">
-      <DependentUpon>201711241649256_ChangedDateType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711261921030_DeletedLoginAndPasswordFromRoles.cs" />
-    <Compile Include="Migrations\201711261921030_DeletedLoginAndPasswordFromRoles.Designer.cs">
-      <DependentUpon>201711261921030_DeletedLoginAndPasswordFromRoles.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711281827494_Update.cs" />
-    <Compile Include="Migrations\201711281827494_Update.Designer.cs">
-      <DependentUpon>201711281827494_Update.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711291903343_ChangedPriceType.cs" />
-    <Compile Include="Migrations\201711291903343_ChangedPriceType.Designer.cs">
-      <DependentUpon>201711291903343_ChangedPriceType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201712160921164_Consolidation.cs" />
-    <Compile Include="Migrations\201712160921164_Consolidation.Designer.cs">
-      <DependentUpon>201712160921164_Consolidation.cs</DependentUpon>
+    <Compile Include="Migrations\201712171232253_Initializer.cs" />
+    <Compile Include="Migrations\201712171232253_Initializer.Designer.cs">
+      <DependentUpon>201712171232253_Initializer.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,26 +99,11 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201711201821380_Init.resx">
-      <DependentUpon>201711201821380_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201712171232253_Initializer.resx">
+      <DependentUpon>201712171232253_Initializer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711201853345_AddedProductImage.resx">
-      <DependentUpon>201711201853345_AddedProductImage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711241649256_ChangedDateType.resx">
-      <DependentUpon>201711241649256_ChangedDateType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711261921030_DeletedLoginAndPasswordFromRoles.resx">
-      <DependentUpon>201711261921030_DeletedLoginAndPasswordFromRoles.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711281827494_Update.resx">
-      <DependentUpon>201711281827494_Update.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711291903343_ChangedPriceType.resx">
-      <DependentUpon>201711291903343_ChangedPriceType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712160921164_Consolidation.resx">
-      <DependentUpon>201712160921164_Consolidation.cs</DependentUpon>
+    <EmbeddedResource Include="Resources\SQL.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

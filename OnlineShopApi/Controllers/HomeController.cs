@@ -48,13 +48,13 @@ namespace OnlineShopApi.Controllers
 		{
 			User user = GetCurrentUser();
 			if (user == null) return RedirectToAction("Login", "Account");
+			if (user.Products.Count <= 0) return RedirectToAction("List", "Product");
 			try
 			{
 				Order order = new Order()
 				{
 					CreateDt = DateTimeOffset.Now,
-					User = user,
-					Products = user.Products
+					UserId = user.Id
 				};
 				UnitOfWork.OrderRepo.Create(order);
 				return RedirectToAction("List", "Product");

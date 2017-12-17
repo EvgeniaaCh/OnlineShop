@@ -16,7 +16,13 @@ namespace OnlineShopApi.Controllers
 			string userName = HttpContext.User.Identity.Name;
 			IdentityUser identityUser = new ApplicationContext().Users.FirstOrDefault(u => u.UserName == userName);
 			User user = UnitOfWork.UserRepo.Get().FirstOrDefault(u => u.Guid == identityUser.Id);
-			UnitOfWork = new UnitOfWork(user.Role.Connection);
+			try
+			{
+				UnitOfWork = new UnitOfWork(user.Role.Connection);
+				user = UnitOfWork.UserRepo.FindById(user.Id);
+			}
+			catch { }
+			
 			return user;
 		}
 	}
