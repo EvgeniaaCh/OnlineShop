@@ -1,11 +1,9 @@
 namespace OnlineShop.DAL.Migrations
 {
-	using System.Data.Entity.Migrations;
-	using System.IO;
-	using System.Reflection;
-	using System.Web;
+    using System.Data.Entity.Migrations;
+    using System.IO;
 
-	public partial class Initializer : DbMigration
+    public partial class Initializer : DbMigration
 	{
 		public override void Up()
 		{

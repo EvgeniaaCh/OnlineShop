@@ -23,11 +23,11 @@ namespace OnlineShopApi.Controllers.ApiControllers
 			Product product = repo.FindById(request.Id);
 			try
 			{
-				UnitOfWork.Context.Database.ExecuteSqlCommand($"do $$ begin perform add_product_to_basket({user.Id}, {product.Id}); end $$");
+				UnitOfWork.Context.Database.ExecuteSqlCommand($"do $$ begin perform \"dbo\".add_product_to_basket({user.Id}, {product.Id}); end $$");
 				return Ok(
 					UnitOfWork
 					.Context.Database
-					.SqlQuery<int>($"select dbo.get_product_count_from_basket({user.Id}, {product.Id});")
+					.SqlQuery<int>($"select \"dbo\".get_product_count_from_basket({user.Id}, {product.Id});")
 					.FirstOrDefault());
 			}
 			catch
@@ -46,14 +46,14 @@ namespace OnlineShopApi.Controllers.ApiControllers
 			if (product == null) return BadRequest();
 			try
 			{
-				UnitOfWork.Context.Database.ExecuteSqlCommand($"do $$ begin perform delete_one_product_instance_from_basket({user.Id}, {product.Id}); end $$");
+				UnitOfWork.Context.Database.ExecuteSqlCommand($"do $$ begin perform dbo.delete_one_product_instance_from_basket({user.Id}, {product.Id}); end $$");
 				DeleteOneProductInstanceFromBasketResponse response = new DeleteOneProductInstanceFromBasketResponse
 				{
-					Count = UnitOfWork.Context.Database.SqlQuery<int>($"select dbo.get_product_count_from_basket({user.Id}, {product.Id});").FirstOrDefault()
+					Count = UnitOfWork.Context.Database.SqlQuery<int>($"select \"dbo\".get_product_count_from_basket({user.Id}, {product.Id});").FirstOrDefault()
 				};
 				return Ok(response);
 			}
-			catch
+			catch(System.Exception ex)
 			{
 				return BadRequest();
 			}

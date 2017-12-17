@@ -136,4 +136,58 @@ CREATE ROLE "admin" LOGIN PASSWORD 'admin';
  
 insert into "dbo"."Roles" ("Name", "Connection") values ('admin', 'admin');
 insert into "dbo"."Roles" ("Name", "Connection") values ('user', 'user');
-  
+ 
+ 
+ create or replace function "dbo"."add_product_to_basket"(user_id int, product_id int) 
+returns void as $$ 
+begin 
+insert into "dbo"."UserProducts" values (user_id, product_id); 
+end; 
+$$ language plpgsql; 
+
+create or replace function "dbo"."delete_one_product_instance_from_basket"(user_id int, product_id int) 
+returns void as $$ 
+begin 
+delete from "dbo"."UserProducts" where "oid" = (select max(oid) from "dbo"."UserProducts" where "User_Id" = user_id and "Product_Id" = product_id); 
+end; 
+$$ language plpgsql;
+
+CREATE OR REPLACE FUNCTION dbo.get_product_count_from_basket( 
+user_id integer, 
+product_id integer) 
+RETURNS INT AS $$ 
+declare c int; 
+begin 
+c = COUNT(*) from "dbo"."UserProducts" where "Product_Id"=product_id and "User_Id"=user_id; 
+return c; 
+end; 
+$$ LANGUAGE plpgsql; 
+
+CREATE OR REPLACE FUNCTION dbo.get_product_count_from_order( 
+order_id integer, 
+product_id integer) 
+RETURNS INT AS $$ 
+declare c int; 
+begin 
+c = COUNT(*) from "dbo"."OrderProducts" where "Product_Id"=product_id and "Order_Id"=order_id; 
+return c; 
+end; 
+$$ LANGUAGE plpgsql;
+
+GRANT INSERT ON ALL TABLES IN SCHEMA "dbo" TO "admin" ;
+GRANT UPDATE ON ALL SEQUENCES IN SCHEMA "dbo" TO "admin";
+GRANT DELETE ON "dbo"."UserProducts" TO "admin";
+GRANT DELETE ON "dbo"."UserProducts" TO "user";
+GRANT UPDATE ON ALL SEQUENCES IN SCHEMA "dbo" TO "user";
+
+alter table "dbo"."Categories" add constraint "check_name" check (CHAR_LENGTH("Name") < 16);
+alter table "dbo"."Categories" add constraint "check_name_1" check (CHAR_LENGTH("Name")>4);
+alter table "dbo"."Products" add constraint "check_name_pro" check (CHAR_LENGTH("Name")< 16);
+alter table "dbo"."Products" add constraint "check_name_pro_2" check (CHAR_LENGTH("Name")>4);
+alter table "dbo"."Products" add constraint "check_name_discr" check (CHAR_LENGTH("Description")<128);
+alter table "dbo"."Roles" add constraint "check_name_roles1" check (CHAR_LENGTH("Name")<16);
+alter table "dbo"."Roles" add constraint "check_name_roles2" check (CHAR_LENGTH("Name")>=4);
+alter table "dbo"."Users" add constraint "check_name_users1" check (CHAR_LENGTH("FirstName")<16);
+alter table "dbo"."Users" add constraint "check_name_users2" check (CHAR_LENGTH("FirstName")>2);
+alter table "dbo"."Users" add constraint "check_name_users3" check (CHAR_LENGTH("LastName")<16);
+alter table "dbo"."Users" add constraint "check_name_users4" check (CHAR_LENGTH("LastName")>2);

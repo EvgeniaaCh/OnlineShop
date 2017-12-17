@@ -22,21 +22,22 @@ namespace OnlineShopApi.Controllers
 				CreateDt = o.CreateDt,
 				Price = o.Products.Sum(p => p.Price * o.Products.Count(pr => pr.Id == p.Id))
 			}).ToList();
-			IProductRepo repo = UnitOfWork.ProductRepo;
 			return View(orders);
 		}
 
-		public ActionResult Detail(int id)
+		public ActionResult Details(int id)
 		{
 			User user = GetCurrentUser();
-			List<Product> orderProducts = UnitOfWork.OrderRepo.FindById(id).Products.ToList();
-			IEnumerable<GetOrderDetailViewModel> details = orderProducts.Select(p => new GetOrderDetailViewModel
+            //List<Product> orderProducts = UnitOfWork.OrderRepo.FindById(id).Products.ToList();
+            Order order = UnitOfWork.OrderRepo.FindById(id);
+			IEnumerable<GetOrderDetailViewModel> details = order.Products.Select(p => new GetOrderDetailViewModel
 			{
 				Id = p.Id,
 				Name = p.Name,
 				Price = p.Price,
-				Count = UnitOfWork.Context.Database.SqlQuery<int>($"select dbo.get_product_count_from_basket({user.Id}, {p.Id});").FirstOrDefault()
+				Count = UnitOfWork.Context.Database.SqlQuery<int>($"select \"dbo\".get_product_count_from_order({order.Id}, {p.Id});").FirstOrDefault()
 			});
+            ViewData["sum"] = details.Sum(d => d.Count * d.Price);
 			return View(details);
 		}
 

@@ -84,6 +84,7 @@ namespace OnlineShopApi.Controllers
 			try
 			{
 				category.Name = viewModel.Name;
+                UnitOfWork.SaveChanges();
 				return RedirectToAction("List");
 			}
 			catch (DbEntityValidationException e)
@@ -95,7 +96,13 @@ namespace OnlineShopApi.Controllers
 				}
 				return View(viewModel);
 			}
-		}
+            catch (Exception e) when (e is DbUpdateException || e is EntityCommandExecutionException)
+            {
+                ModelState.AddModelError("", "Для запрошенного действия не хватает прав");
+                ViewData["categories"] = UnitOfWork.CategoryRepo.Get().ToList();
+                return View(viewModel);
+            }
+        }
 
 		[HttpGet]
 		public ActionResult Delete(int id)

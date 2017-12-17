@@ -102,9 +102,6 @@
     <EmbeddedResource Include="Migrations\201712171232253_Initializer.resx">
       <DependentUpon>201712171232253_Initializer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\SQL.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

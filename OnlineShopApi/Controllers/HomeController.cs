@@ -59,7 +59,7 @@ namespace OnlineShopApi.Controllers
 				UnitOfWork.OrderRepo.Create(order);
 				return RedirectToAction("List", "Product");
 			}
-			catch
+			catch(System.Exception ex)
 			{
 				return RedirectToAction("Basket", "Home");
 			}
